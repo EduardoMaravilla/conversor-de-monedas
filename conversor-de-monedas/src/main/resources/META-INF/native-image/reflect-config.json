@@ -1,0 +1,13 @@
+[
+  {
+    "name": "com.google.gson.Gson",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "app.models.ExchangeResponse",
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true,
+    "allPublicFields": true
+  }
+]
