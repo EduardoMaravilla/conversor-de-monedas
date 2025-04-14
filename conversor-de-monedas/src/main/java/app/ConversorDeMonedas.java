@@ -8,67 +8,115 @@ import java.util.Scanner;
 
 public class ConversorDeMonedas {
 
-    private static final String MENU = """
-        ****************************************************
-        *  Sea bienvenido/a al Conversor de Moneda =)      *
-        ****************************************************
-        1) Dólar => Peso argentino
-        2) Peso argentino => Dólar
-        3) Dólar => Real brasileño
-        4) Real brasileño => Dólar
-        5) Dólar => Peso colombiano
-        6) Peso colombiano => Dólar
-        7) Salir
-        ****************************************************
-        Elija una opción válida:
-        """;
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_CYAN = "\u001B[36m";
+    private static final String ANSI_RED = "\u001B[31m";
+    private static final String ANSI_GREEN = "\u001B[32m";
 
-    private static final String[][] CONVERCIONES = {
+    private static final String[][] CONVERSIONES = {
         {"USD", "ARS"},
         {"ARS", "USD"},
         {"USD", "BRL"},
         {"BRL", "USD"},
         {"USD", "COP"},
-        {"COP", "USD"}};
+        {"COP", "USD"}
+    };
 
-    private static final int OUTPUT_VALUE = 7;
+    private static final int OPCION_SALIR = 7;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        while (true){
-            System.out.println(MENU);
-            try {
-                int conversor = scanner.nextInt();
-                if (conversor == OUTPUT_VALUE){
-                    break;
+        try {
+            while (true) {
+                mostrarMenu();
+
+                int opcion = leerOpcion(scanner);
+                if (opcion == OPCION_SALIR) {
+                    if (confirmarSalida(scanner)) {
+                        System.out.println(ANSI_GREEN + "Gracias por usar el conversor. ¡Hasta pronto!" + ANSI_RESET);
+                        break;
+                    } else {
+                        continue;
+                    }
                 }
-                if (conversor > OUTPUT_VALUE || conversor < 1){
-                    System.out.println("Selección Invalida, Vuelva a Intentarlo");
+
+                if (opcion < 1 || opcion > CONVERSIONES.length) {
+                    System.out.println(ANSI_RED + "Selección inválida. Intente de nuevo." + ANSI_RESET);
                     continue;
                 }
-                System.out.println("Digite la cantidad a convertir: ");
-                double amount = scanner.nextDouble();
-                double resultado = conversion(conversor, amount);
-                String response = String.format(
-                    "El valor de %.2f [%s] corresponde al valor final de =>>> %.2f [%s]",
-                    amount,
-                    CONVERCIONES[conversor - 1][0],
-                    resultado,
-                    CONVERCIONES[conversor - 1][1]
-                );
-                System.out.println(response);
-            } catch (InputMismatchException e){
-                System.out.println("Error al ingresar datos");
-                System.out.println("Vuelva ha intentarlo");
-            } catch (IOException e) {
-                System.out.println("Lo siento hubo un error");
-            } catch (InterruptedException e) {
-                System.out.println("Vuelve a intentarlo mas tarde");
+
+                double monto = leerMonto(scanner);
+                if (monto <= 0) {
+                    System.out.println(ANSI_RED + "Monto no válido. Debe ser mayor que cero." + ANSI_RESET);
+                    continue;
+                }
+
+                try {
+                    double resultado = conversion(opcion, monto);
+                    mostrarResultado(monto, resultado, opcion);
+                } catch (IOException | InterruptedException e) {
+                    System.out.println(ANSI_RED + "Error durante la conversión. Intente más tarde." + ANSI_RESET);
+                }
             }
+        } finally {
+            scanner.close();
         }
     }
 
-    public static double conversion(int conversor, double amount) throws IOException, InterruptedException {
-        return ExchangeRateApi.obtenerConversion(CONVERCIONES[conversor-1][0], CONVERCIONES[conversor-1][1], amount);
+    private static void mostrarMenu() {
+        System.out.println(ANSI_CYAN + """
+            ****************************************************
+            *  Sea bienvenido/a al Conversor de Moneda =)      *
+            ****************************************************""" + ANSI_RESET);
+        for (int i = 0; i < CONVERSIONES.length; i++) {
+            System.out.printf("%d) %s => %s%n", (i + 1), CONVERSIONES[i][0], CONVERSIONES[i][1]);
+        }
+        System.out.printf("%d) Salir%n", OPCION_SALIR);
+        System.out.println("****************************************************");
+        System.out.print("Elija una opción válida: ");
+    }
+
+    private static int leerOpcion(Scanner scanner) {
+        try {
+            return scanner.nextInt();
+        } catch (InputMismatchException e) {
+            scanner.nextLine(); // limpiar el buffer
+            return -1;
+        }
+    }
+
+    private static double leerMonto(Scanner scanner) {
+        System.out.print("Digite la cantidad a convertir: ");
+        try {
+            return scanner.nextDouble();
+        } catch (InputMismatchException e) {
+            scanner.nextLine(); // limpiar buffer
+            return -1;
+        }
+    }
+
+    private static boolean confirmarSalida(Scanner scanner) {
+        System.out.print("¿Está seguro que desea salir? (s/n): ");
+        String respuesta = scanner.next().trim().toLowerCase();
+        return respuesta.equals("s");
+    }
+
+    private static double conversion(int opcion, double cantidad) throws IOException, InterruptedException {
+        String from = CONVERSIONES[opcion - 1][0];
+        String to = CONVERSIONES[opcion - 1][1];
+        return ExchangeRateApi.obtenerConversion(from, to, cantidad);
+    }
+
+    private static void mostrarResultado(double cantidad, double resultado, int opcion) {
+        String from = CONVERSIONES[opcion - 1][0];
+        String to = CONVERSIONES[opcion - 1][1];
+        String mensaje = String.format(
+            "El valor de %.2f [%s] corresponde a %.2f [%s]",
+            cantidad, from, resultado, to
+        );
+        String borde = "*".repeat(mensaje.length());
+        System.out.println(ANSI_GREEN + borde);
+        System.out.println(mensaje);
+        System.out.println(borde + ANSI_RESET);
     }
 }
