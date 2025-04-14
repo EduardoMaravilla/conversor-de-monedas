@@ -10,7 +10,15 @@ module org.maravill.conversordemonedasfx {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires java.net.http;
+    requires annotations;
+    requires com.fasterxml.jackson.databind;
+    requires org.json;
+    requires java.logging;
 
     opens org.maravill.conversordemonedasfx to javafx.fxml;
     exports org.maravill.conversordemonedasfx;
+    exports org.maravill.conversordemonedasfx.controller;
+    opens org.maravill.conversordemonedasfx.controller to javafx.fxml;
+    exports org.maravill.conversordemonedasfx.models;
 }

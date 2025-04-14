@@ -2,7 +2,7 @@ package org.maravill.conversordemonedasfx;
 
 import javafx.application.Application;
 
-public class Launcher {
+public class Main {
     public static void main(String[] args) {
         Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
             if (throwable instanceof IllegalArgumentException
