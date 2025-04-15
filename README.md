@@ -70,7 +70,6 @@ Este repositorio contiene dos versiones del conversor:
 
 ### 📜 Licencia
 
-Este proyecto se realiza con fines educativos como parte del programa **Oracle Next Education** y está licenciado bajo los términos de la [Apache License 2.0](LICENSE).  
-Esto significa que puedes usarlo, modificarlo y distribuirlo, siempre y cuando mantengas los avisos de derechos de autor y la misma licencia en cualquier copia del software.
+Este proyecto se realiza con fines educativos como parte del programa **Oracle Next Education** y está licenciado bajo los términos de la [Apache License 2.0](LICENSE). Esto significa que puedes usarlo, modificarlo y distribuirlo, siempre y cuando mantengas los avisos de derechos de autor y la misma licencia en cualquier copia del software.
 
 Para más información, puedes consultar la [licencia completa aquí](https://www.apache.org/licenses/LICENSE-2.0).
