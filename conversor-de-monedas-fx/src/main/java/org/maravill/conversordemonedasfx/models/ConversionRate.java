@@ -6,13 +6,15 @@ import java.util.Map;
 public class ConversionRate {
     private String baseCode;
     private Map<String,Double> conversionRates;
+    private Long lastUpdate;
 
     public ConversionRate() {
     }
 
-    public ConversionRate(String baseCode, Map<String, Double> conversionRates) {
+    public ConversionRate(String baseCode, Map<String, Double> conversionRates, Long lastUpdate) {
         this.baseCode = baseCode;
         this.conversionRates = conversionRates;
+        this.lastUpdate = lastUpdate;
     }
 
     public String getBaseCode() {
@@ -29,5 +31,13 @@ public class ConversionRate {
 
     public void setConversionRates(Map<String, Double> conversionRates) {
         this.conversionRates = conversionRates;
+    }
+
+    public Long getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Long lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 }

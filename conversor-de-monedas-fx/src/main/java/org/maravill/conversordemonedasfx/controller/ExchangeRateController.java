@@ -12,7 +12,9 @@ import org.maravill.conversordemonedasfx.models.ConversionHistory;
 import org.maravill.conversordemonedasfx.models.ConversionRate;
 import org.maravill.conversordemonedasfx.models.Currency;
 import org.maravill.conversordemonedasfx.services.ExchangeService;
+import org.maravill.conversordemonedasfx.services.FileService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +28,7 @@ public class ExchangeRateController {
     private static final String STYLE_SUCCESS = "alert-success";
     private static final String STYLE_WARNING = "alert-warning";
     private static final String STYLE_DANGER = "alert-danger";
+    private static final int MAX_HISTORY_SIZE = 500;
 
     public TextField messageSuccessful;
     public Button exchangeButton;
@@ -34,12 +37,14 @@ public class ExchangeRateController {
     public TextField amountToExchange;
     public TextField amountExchange;
     public TableColumn<ConversionHistory, String> historyDate;
-    public TableColumn<ConversionHistory,String> historyOriginCoin;
+    public TableColumn<ConversionHistory, String> historyOriginCoin;
     public TableColumn<ConversionHistory, String> historyDestinyCoin;
     public TableColumn<ConversionHistory, String> historyAmount;
     public TableColumn<ConversionHistory, String> historyConversion;
     public TableView<ConversionHistory> historyTable;
     public Button buttonClearHistory;
+    public TextField author;
+    public TextField historyLabel;
 
 
     private ObservableList<String> supportsCoins;
@@ -48,8 +53,9 @@ public class ExchangeRateController {
     @FXML
     public void initialize() {
 
-        history = FXCollections.observableArrayList();
-        historyTable.setItems(history);
+        author.setText("© " + LocalDate.now().getYear() + " EDUARDO MARAVILLA");
+
+        setInitialHistory();
 
         // Obtiene las monedas soportadas
         List<Currency> currencyCodes = ExchangeService.getCurrencyCodes();
@@ -71,6 +77,20 @@ public class ExchangeRateController {
         historyAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
         historyConversion.setCellValueFactory(new PropertyValueFactory<>("conversion"));
 
+    }
+
+    private void setInitialHistory() {
+        history = FXCollections.observableArrayList();
+        List<ConversionHistory> conversionHistories = FileService.loadConversionHistoryFromFile();
+        if (!conversionHistories.isEmpty()) {
+            history = FXCollections.observableArrayList(conversionHistories);
+        }
+        historyTable.setItems(history);
+        if (!history.isEmpty()) {
+            historyLabel.setText("HISTORIAL (" + history.size() + ")");
+        }else {
+            historyLabel.setText("HISTORIAL");
+        }
     }
 
     private void addListenerComboBox(ComboBox<String> comboBox) {
@@ -107,6 +127,7 @@ public class ExchangeRateController {
             comboBox.valueProperty().setValue(null);
             amountExchange.clear();
         });
+
     }
 
     private void addEventButtonConversion() {
@@ -149,16 +170,18 @@ public class ExchangeRateController {
         });
     }
 
-    private void addEventButtonClearHistory(){
+    private void addEventButtonClearHistory() {
         buttonClearHistory.setOnAction(e -> {
             history.clear();
             historyTable.setItems(history);
+            historyLabel.setText("HISTORIAL");
+            FileService.saveHistoryConversions(new ArrayList<>());
         });
     }
 
     private Double setAmountExchange(ConversionRate conversionRate,
                                      String secondCoinCode,
-                                     double amountToExchangeValue){
+                                     double amountToExchangeValue) {
         double valueConversionRate = conversionRate.getConversionRates().get(secondCoinCode);
         double amountExchangeValue = amountToExchangeValue * valueConversionRate;
         amountExchange.setText(String.format("%.3f", amountExchangeValue));
@@ -195,13 +218,21 @@ public class ExchangeRateController {
     private void updateHistoryTable(String originCoin, String destinyCoin,
                                     double amount, double conversion) {
         String date = String.format("%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS", System.currentTimeMillis());
-        ConversionHistory conversionHistory=
-            new ConversionHistory(date,originCoin,destinyCoin,
-                String.format("%.3f",amount),String.format("%.3f",conversion));
+        ConversionHistory conversionHistory =
+            new ConversionHistory(date, originCoin, destinyCoin,
+                String.format("%.3f", amount), String.format("%.3f", conversion));
         if (history == null) {
             history = FXCollections.observableArrayList();
         }
-        history.add(conversionHistory);
+
+        if (history.size() >= MAX_HISTORY_SIZE) {
+            history.remove(MAX_HISTORY_SIZE - 1);
+        }
+        history.addFirst(conversionHistory);
+
+        FileService.saveHistoryConversions(new ArrayList<>(history));
+        historyLabel.setText("HISTORIAL (" + history.size() + ")");
+
         historyTable.setItems(history);
         historyTable.scrollTo(history.size() - 1);
     }

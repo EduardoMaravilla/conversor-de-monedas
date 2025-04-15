@@ -12,18 +12,19 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.*;
 
-public final class ExchangeRateApi {
-    private static final String URL_API = System.getenv("ExchangeRateApi");
+public final class ExchangeRateApiService {
+    private static final String URL_API = "https://v6.exchangerate-api.com/v6";
+    private static String apiKey;
     private static final String SUPPORT_CODE_NAME = "supported_codes";
     private static final String CODES_PATH="/codes";
     private static final String LATEST_PATH="/latest/";
     private static final int OK_VALUE = 200;
 
-    private ExchangeRateApi() {
+    private ExchangeRateApiService() {
     }
 
     public static List<Currency> getSupportCodesFromApi() {
-        Optional<String> codes = getInfo(URL_API + CODES_PATH);
+        Optional<String> codes = getInfo(URL_API+ExchangeRateApiService.apiKey + CODES_PATH);
         if (codes.isEmpty()) {
             return Collections.emptyList();
         }
@@ -57,7 +58,7 @@ public final class ExchangeRateApi {
     }
 
     public static ConversionRate getConversionRateFromBaseCode(String baseCode) {
-        Optional<String> rates = getInfo(URL_API + LATEST_PATH + baseCode);
+        Optional<String> rates = getInfo(URL_API + ExchangeRateApiService.apiKey + LATEST_PATH + baseCode);
         if (rates.isEmpty()) {
             return null;
         }
@@ -68,6 +69,13 @@ public final class ExchangeRateApi {
         for (String key : ratesJson.keySet()) {
             conversionRates.put(key, ratesJson.getDouble(key));
         }
-        return new ConversionRate(baseCodeRate,conversionRates);
+        return new ConversionRate(baseCodeRate,conversionRates, System.currentTimeMillis());
+    }
+
+    public static boolean validateApiKey(String apiKey) {
+        ExchangeRateApiService.apiKey = "/" + apiKey;
+        Optional<String> info = getInfo(URL_API + ExchangeRateApiService.apiKey + "/pair/EUR/GBP");
+        boolean isSaved = FileService.saveApiKey(apiKey);
+        return isSaved && info.isPresent();
     }
 }

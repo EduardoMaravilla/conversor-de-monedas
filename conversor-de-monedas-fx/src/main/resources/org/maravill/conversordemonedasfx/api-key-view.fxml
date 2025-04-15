@@ -1,17 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.TextFlow?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <VBox layoutX="331.0" prefHeight="200.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <TextField />
-            <TextField />
-         </children>
-      </VBox>
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="800.0" style="-fx-background-color: #121212; -fx-background-radius: 10; -fx-border-color: #D1D5DB; -fx-border-radius: 10;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.maravill.conversordemonedasfx.controller.InitialPageController">
+   <VBox layoutX="331.0" prefHeight="850.0" prefWidth="800.0" style="-fx-background-color: #121212;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+      <TextField alignment="CENTER" editable="false" focusTraversable="false" prefHeight="60.0" prefWidth="180.0" style="-fx-background-color: #121212; -fx-text-fill: #F4F4F5; -fx-border-color: transparent transparent #F4F4F5 transparent; -fx-border-width: 3;" text="APLICACIÓN CONVERSOR DE MONEDAS">
+         <styleClass>
+            <String fx:value="h1" />
+            <String fx:value="italic" />
+            <String fx:value="b" />
+         </styleClass>
+         <VBox.margin>
+            <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+         </VBox.margin>
+      </TextField>
+      <TextFlow fx:id="descriptionText" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #121212; -fx-background-radius: 10; -fx-border-color: #F4F4F5; -fx-border-radius: 10; -fx-text-fill: #F4F4F5;" textAlignment="JUSTIFY">
+         <styleClass>
+            <String fx:value="h4" />
+            <String fx:value="italic" />
+            <String fx:value="b" />
+         </styleClass>
+         <VBox.margin>
+            <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+         </VBox.margin>
+         <padding>
+            <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
+         </padding>
+      </TextFlow>
+      <Button fx:id="apiKeyButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="775.0" style="-fx-background-color: #D1D5DB; -fx-text-fill: #121212;" text="Optener Api key (https://www.exchangerate-api.com) ">
+         <styleClass>
+            <String fx:value="btn" />
+            <String fx:value="dfn" />
+            <String fx:value="b" />
+         </styleClass>
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </VBox.margin>
+         <effect>
+            <DropShadow blurType="TWO_PASS_BOX" height="0.0" offsetX="5.0" offsetY="5.0" radius="0.0" width="0.0">
+               <color>
+                  <Color red="0.95686274766922" green="0.95686274766922" blue="0.9607843160629272" />
+               </color>
+            </DropShadow>
+         </effect>
+      </Button>
+      <TextField alignment="CENTER" editable="false" prefHeight="30.0" prefWidth="120.0" style="-fx-background-color: #121212; -fx-text-fill: #F4F4F5;" text="--------------------------------------------------------------------------------------------------------------------------------">
+         <styleClass>
+            <String fx:value="h4" />
+            <String fx:value="b" />
+            <String fx:value="italic" />
+         </styleClass>
+      </TextField>
+       <HBox prefHeight="40.0" prefWidth="800.0">
+           <VBox.margin>
+               <Insets />
+           </VBox.margin>
+           <TextField alignment="CENTER" editable="false" prefHeight="30.0" prefWidth="120.0" style="-fx-background-color: #121212; -fx-text-fill: #F4F4F5;" text="API KEY:">
+              <styleClass>
+                  <String fx:value="h4" />
+                  <String fx:value="b" />
+                  <String fx:value="italic" />
+              </styleClass>
+              <HBox.margin>
+                  <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
+              </HBox.margin>
+           </TextField>
+           <TextField fx:id="apiKeyText" prefHeight="30.0" prefWidth="650.0" promptText="Escribe tu api key" style="-fx-background-color: #F4F4F5; -fx-text-fill: #121212;">
+              <styleClass>
+                  <String fx:value="h4" />
+                  <String fx:value="b" />
+                  <String fx:value="italic" />
+              </styleClass>
+              <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="10.0" top="5.0" />
+              </HBox.margin>
+           </TextField>
+       </HBox>
+      <TextField alignment="CENTER" editable="false" prefHeight="30.0" prefWidth="120.0" style="-fx-background-color: #121212; -fx-text-fill: #F4F4F5;" text="--------------------------------------------------------------------------------------------------------------------------------">
+         <styleClass>
+            <String fx:value="h4" />
+            <String fx:value="b" />
+            <String fx:value="italic" />
+         </styleClass>
+      </TextField>
+      <Button fx:id="continueButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="775.0" style="-fx-background-color: #3B82F6; -fx-text-fill: #F4F4F5;" text="CONTINUAR">
+         <styleClass>
+            <String fx:value="btn" />
+            <String fx:value="dfn" />
+            <String fx:value="b" />
+         </styleClass>
+         <effect>
+            <DropShadow blurType="TWO_PASS_BOX" height="0.0" offsetX="5.0" offsetY="5.0" radius="0.0" width="0.0">
+               <color>
+                  <Color red="0.95686274766922" green="0.95686274766922" blue="0.9607843160629272" />
+               </color>
+            </DropShadow>
+         </effect>
+         <VBox.margin>
+            <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+         </VBox.margin>
+      </Button>
+      <TextField fx:id="messageText" alignment="CENTER" editable="false" prefHeight="65.0" prefWidth="780.0" visible="false">
+         <styleClass>
+            <String fx:value="h4" />
+            <String fx:value="alert" />
+            <String fx:value="alert-success" />
+         </styleClass>
+         <VBox.margin>
+            <Insets bottom="5.0" left="10.0" right="10.0" top="15.0" />
+         </VBox.margin>
+      </TextField>
+   </VBox>
 </AnchorPane>

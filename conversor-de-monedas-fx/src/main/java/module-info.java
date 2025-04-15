@@ -15,6 +15,7 @@ module org.maravill.conversordemonedasfx {
     requires com.fasterxml.jackson.databind;
     requires org.json;
     requires java.logging;
+    requires java.desktop;
 
     opens org.maravill.conversordemonedasfx to javafx.fxml;
     exports org.maravill.conversordemonedasfx;
