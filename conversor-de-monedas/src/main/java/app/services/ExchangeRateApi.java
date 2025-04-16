@@ -11,7 +11,7 @@ import java.net.http.HttpResponse;
 
 public final class ExchangeRateApi {
     private static final String URL_API = "https://v6.exchangerate-api.com/v6/";
-    private static final String API_KEY = "ad69bf59500dfcdba92cc3b5";
+    private static final String API_KEY = "";
     private static final String PAIR_PATH = "/pair";
 
     private ExchangeRateApi() {}
