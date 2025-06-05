@@ -11,7 +11,7 @@ import java.net.http.HttpResponse;
 
 public final class ExchangeRateApi {
     private static final String URL_API = "https://v6.exchangerate-api.com/v6/";
-    private static final String API_KEY = "";
+    private static final String API_KEY = "eb33712be98e6d9c032614a3"; //write your API key here
     private static final String PAIR_PATH = "/pair";
 
     private ExchangeRateApi() {}
@@ -22,7 +22,6 @@ public final class ExchangeRateApi {
             "/" + firstCoin + "/" + secondCoin + "/" + amount);
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder().uri(uriConversion).GET().build();
-
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         Gson gson = new Gson();
         ExchangeResponse exchangeResponse = gson.fromJson(response.body(), ExchangeResponse.class);

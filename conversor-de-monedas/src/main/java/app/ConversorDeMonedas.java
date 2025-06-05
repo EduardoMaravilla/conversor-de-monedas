@@ -22,7 +22,7 @@ public class ConversorDeMonedas {
         {"COP", "USD"}
     };
 
-    private static final int OPCION_SALIR = 7;
+    private static final int OPTION_SALIR = 7;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -30,8 +30,8 @@ public class ConversorDeMonedas {
             while (true) {
                 mostrarMenu();
 
-                int opcion = leerOpcion(scanner);
-                if (opcion == OPCION_SALIR) {
+                int option = readOption(scanner);
+                if (option == OPTION_SALIR) {
                     if (confirmarSalida(scanner)) {
                         System.out.println(ANSI_GREEN + "Gracias por usar el conversor. ¡Hasta pronto!" + ANSI_RESET);
                         break;
@@ -40,7 +40,7 @@ public class ConversorDeMonedas {
                     }
                 }
 
-                if (opcion < 1 || opcion > CONVERSIONES.length) {
+                if (option < 1 || option > CONVERSIONES.length) {
                     System.out.println(ANSI_RED + "Selección inválida. Intente de nuevo." + ANSI_RESET);
                     continue;
                 }
@@ -52,8 +52,8 @@ public class ConversorDeMonedas {
                 }
 
                 try {
-                    double resultado = conversion(opcion, monto);
-                    mostrarResultado(monto, resultado, opcion);
+                    double resultado = conversion(option, monto);
+                    mostrarResultado(monto, resultado, option);
                 } catch (IOException | InterruptedException e) {
                     System.out.println(ANSI_RED + "Error durante la conversión. Intente más tarde." + ANSI_RESET);
                 }
@@ -71,16 +71,16 @@ public class ConversorDeMonedas {
         for (int i = 0; i < CONVERSIONES.length; i++) {
             System.out.printf("%d) %s => %s%n", (i + 1), CONVERSIONES[i][0], CONVERSIONES[i][1]);
         }
-        System.out.printf("%d) Salir%n", OPCION_SALIR);
+        System.out.printf("%d) Salir%n", OPTION_SALIR);
         System.out.println("****************************************************");
         System.out.print("Elija una opción válida: ");
     }
 
-    private static int leerOpcion(Scanner scanner) {
+    private static int readOption(Scanner scanner) {
         try {
             return scanner.nextInt();
         } catch (InputMismatchException e) {
-            scanner.nextLine(); // limpiar el buffer
+            scanner.nextLine();
             return -1;
         }
     }
@@ -90,7 +90,7 @@ public class ConversorDeMonedas {
         try {
             return scanner.nextDouble();
         } catch (InputMismatchException e) {
-            scanner.nextLine(); // limpiar buffer
+            scanner.nextLine();
             return -1;
         }
     }

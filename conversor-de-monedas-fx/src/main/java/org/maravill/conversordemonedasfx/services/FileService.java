@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public final class FileService {
 
@@ -41,6 +40,9 @@ public final class FileService {
             SupportCodes supportCodes = readFromJson(file, SupportCodes.class);
             long nowDate = System.currentTimeMillis();
             long daysThirtyInMilis = 1000L * 60 * 60 * 24 * 30;
+            if (supportCodes.getLastUpdate() == null){
+                supportCodes.setLastUpdate(nowDate);
+            }
             return (nowDate - daysThirtyInMilis < supportCodes.getLastUpdate()) ?
                 supportCodes.getCoinSupportCodes() : Collections.emptyList();
         } catch (IOException e) {
@@ -176,7 +178,7 @@ public final class FileService {
                     dto.getAmount(),
                     dto.getConversion()
                 ))
-                .collect(Collectors.toList());
+                .toList();
         } catch (IOException e) {
             LOGGER.warning("No se pudo leer el archivo: " + e.getLocalizedMessage());
             return Collections.emptyList();
